@@ -40,24 +40,28 @@
                 @Html.DisplayFor(modelItem => item.IdContrato)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdInmueble)
+                @Html.DisplayFor(modelItem => item.inmueble.Direccion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdInquilino)
+                @Html.DisplayFor(modelItem => item.inquilino.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaInicio)
+                @Html.DisplayFor(modelItem => item.FechaInicio.Day) /
+                @Html.DisplayFor(modelItem => item.FechaInicio.Month) / 
+                @Html.DisplayFor(modelItem => item.FechaInicio.Year)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaFinal)
+                @Html.DisplayFor(modelItem => item.FechaFinal.Day) /
+                @Html.DisplayFor(modelItem => item.FechaFinal.Month) / 
+                @Html.DisplayFor(modelItem => item.FechaFinal.Year)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Monto)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.IdContrato }) |
-                @Html.ActionLink("Details", "Details", new { id=item.IdContrato }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.IdContrato })
+                @Html.ActionLink("Editar", "Editar", new {  id=item.IdContrato }) |
+                @Html.ActionLink("Detalles", "Detalles", new { id=item.IdContrato }) |
+                @Html.ActionLink("Eliminar", "Eliminar", new { id=item.IdContrato })
             </td>
         </tr>
 }

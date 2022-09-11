@@ -21,25 +21,29 @@
             @Html.DisplayNameFor(model => model.IdInmueble)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdInmueble)
+            @Html.DisplayFor(model => model.inmueble.Direccion)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdInquilino)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdInquilino)
+            @Html.DisplayFor(model => model.inquilino.Nombre)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaInicio)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaInicio)
+            @Html.DisplayFor(model => model.FechaInicio.Day) /
+            @Html.DisplayFor(model => model.FechaInicio.Month) /
+            @Html.DisplayFor(model => model.FechaInicio.Year) 
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaFinal)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaFinal)
+            @Html.DisplayFor(model => model.FechaFinal.Day) /
+            @Html.DisplayFor(model => model.FechaFinal.Month) /
+            @Html.DisplayFor(model => model.FechaFinal.Year) 
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Monto)

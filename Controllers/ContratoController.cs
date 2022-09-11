@@ -10,89 +10,114 @@ namespace Net.Controllers
 {
     public class ContratoController : Controller
     {
+        RepositorioContrato repositorioContrato;
+        RepositorioInmueble repositorioInmueble;
+        RepositorioInquilino repositorioInquilino;
         public ContratoController()
         {
-
+            repositorioContrato = new RepositorioContrato();
+            repositorioInmueble = new RepositorioInmueble();
+            repositorioInquilino = new RepositorioInquilino();
         }
 
         // GET: Contrato
         public ActionResult Index()
         {
-            return View();
+            var lista = repositorioContrato.ObtenerContratos();
+            return View(lista);
         }
 
         // GET: Contrato/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Detalles(int id)
         {
-            return View();
+            
+            var lista = repositorioContrato.ObtenerContrato(id);
+            return View(lista);
         }
 
         // GET: Contrato/Create
         public ActionResult Create()
         {
+            ViewBag.inmueble = repositorioInmueble.ObtenerInmuebles();
+            ViewBag.inquilino = repositorioInquilino.ObtenerInquilinos();
             return View();
         }
 
         // POST: Contrato/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Contrato contrato)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                int res = repositorioContrato.Alta(contrato);
+                if(res > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View();
+                }
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                throw;
             }
         }
 
         // GET: Contrato/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Editar(int id)
         {
-            return View();
+            ViewBag.inmueble = repositorioInmueble.ObtenerInmuebles();
+            ViewBag.inquilino = repositorioInquilino.ObtenerInquilinos();
+            var dato = repositorioContrato.ObtenerContrato(id);
+            return View(dato);
         }
 
         // POST: Contrato/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Editar(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
-
+                Contrato c = repositorioContrato.ObtenerContrato(id);
+                c.IdInmueble = Int32.Parse(collection["IdInmueble"]);
+                c.IdInquilino = Int32.Parse(collection["IdInquilino"]);
+                c.FechaInicio = DateTime.Parse(collection["FechaInicio"]);
+                c.FechaFinal = DateTime.Parse(collection["FechaFinal"]);
+                c.Monto = double.Parse(collection["Monto"]);
+                repositorioContrato.Actualizar(c);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                throw;
             }
         }
 
         // GET: Contrato/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Eliminar(int id)
         {
-            return View();
+            var dato = repositorioContrato.ObtenerContrato(id);
+            return View(dato);
         }
 
         // POST: Contrato/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Eliminar(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                repositorioContrato.Baja(id);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                throw;
             }
         }
     }

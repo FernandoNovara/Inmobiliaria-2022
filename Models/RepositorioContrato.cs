@@ -1,4 +1,5 @@
 namespace Net.Models;
+
 using MySql.Data.MySqlClient;
 
 public class RepositorioContrato
@@ -15,8 +16,11 @@ public class RepositorioContrato
         var res = new List<Contrato>();
         using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
         {
-            String sql = @"Select IdContrato,IdInmueble,IdInquilino,FechaInicio,FechaFinal,Monto 
-                            FROM Contrato;";
+            String sql = @"Select IdContrato,inmueble.IdInmueble,inmueble.Direccion,inquilino.IdInquilino,inquilino.Nombre,FechaInicio,FechaFinal,Monto 
+                            FROM Contrato
+                            JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
+                            JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
+                            ORDER BY IdInmueble ASC;";
             using(MySqlCommand comm = new MySqlCommand(sql,conn))
             {
                 conn.Open();
@@ -26,11 +30,19 @@ public class RepositorioContrato
                     Contrato i = new Contrato
                     {
                         IdContrato = reader.GetInt32(0),
-                        IdInmueble = reader.GetInt32(1),
-                        IdInquilino = reader.GetInt32(2),
-                        FechaInicio = reader.GetDateTime(3),
-                        FechaFinal = reader.GetDateTime(4),
-                        Monto = reader.GetDouble(5),
+                        inmueble = new Inmueble
+                            {
+                              IdInmueble = reader.GetInt32(1),  
+                              Direccion = reader.GetString(2),
+                            },
+                        inquilino = new Inquilino
+                            {
+                                IdInquilino = reader.GetInt32(3),
+                                Nombre = reader.GetString(4),
+                            },
+                        FechaInicio = reader.GetDateTime(5),
+                        FechaFinal = reader.GetDateTime(6),
+                        Monto = reader.GetDouble(7),
                     };
                     res.Add(i);
                 }
@@ -73,8 +85,10 @@ public class RepositorioContrato
         Contrato res = null;
         using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
         {
-            String sql = @"Select IdContrato,IdInmueble,IdInquilino,FechaInicio,FechaFinal,Monto 
+            String sql = @"Select IdContrato,inmueble.IdInmueble,inmueble.Direccion,inquilino.IdInquilino,inquilino.Nombre,FechaInicio,FechaFinal,Monto 
                             FROM Contrato
+                            JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
+                            JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
                             where IdContrato = @id;";
             using(MySqlCommand comm = new MySqlCommand(sql,conn))
             {
@@ -86,11 +100,19 @@ public class RepositorioContrato
                     res = new Contrato
                     {
                         IdContrato = reader.GetInt32(0),
-                        IdInmueble = reader.GetInt32(1),
-                        IdInquilino = reader.GetInt32(2),
-                        FechaInicio = reader.GetDateTime(3),
-                        FechaFinal = reader.GetDateTime(4),
-                        Monto = reader.GetDouble(5),
+                        inmueble = new Inmueble
+                            {
+                              IdInmueble = reader.GetInt32(1),  
+                              Direccion = reader.GetString(2),
+                            },
+                        inquilino = new Inquilino
+                            {
+                                IdInquilino = reader.GetInt32(3),
+                                Nombre = reader.GetString(4),
+                            },
+                        FechaInicio = reader.GetDateTime(5),
+                        FechaFinal = reader.GetDateTime(6),
+                        Monto = reader.GetDouble(7),
                     };
                 }
                 conn.Close();

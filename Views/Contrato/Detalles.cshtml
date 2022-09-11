@@ -1,3 +1,4 @@
+@using Net.Controllers
 @model Net.Models.Contrato
 
 @{
@@ -20,25 +21,31 @@
             @Html.DisplayNameFor(model => model.IdInmueble)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdInmueble)
+            @Html.DisplayFor(model => model.inmueble.Direccion)
+            @Html.ActionLink("Detalles", "Detalles","Inmueble", new {  id = Model.inmueble.IdInmueble })
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdInquilino)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdInquilino)
+            @Html.DisplayFor(model => model.inquilino.Nombre)
+            @Html.ActionLink("Detalles", "Detalles","Inquilino", new {  id = Model.inquilino.IdInquilino })
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaInicio)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaInicio)
+            @Html.DisplayFor(model => model.FechaInicio.Day) /
+            @Html.DisplayFor(model => model.FechaInicio.Month) / 
+            @Html.DisplayFor(model => model.FechaInicio.Year)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaFinal)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaFinal)
+            @Html.DisplayFor(model => model.FechaFinal.Day) /
+            @Html.DisplayFor(model => model.FechaFinal.Month) / 
+            @Html.DisplayFor(model => model.FechaFinal.Year)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Monto)
@@ -49,6 +56,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.IdContrato }) |
     <a asp-action="Index">Back to List</a>
 </div>
