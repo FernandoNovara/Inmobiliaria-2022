@@ -1,13 +1,12 @@
 @model Net.Models.Inquilino
 
 @{
-    ViewData["Title"] = "Informacion de Inquilino";
+    ViewData["Title"] = "Detalles de "+Model.Nombre;
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>Inquilino</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -55,5 +54,5 @@
     </dl>
 </div>
 <div>
-    <a class="btn btn-danger" asp-action="Index">Volver</a>
+    <a class="btn btn-success" asp-action="Index">Volver</a>
 </div>

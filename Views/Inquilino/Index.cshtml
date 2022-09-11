@@ -1,7 +1,7 @@
 @model IEnumerable<Net.Models.Inquilino>
 
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Inicio de Inquilino";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -61,9 +61,9 @@
                 @Html.DisplayFor(modelItem => item.Telefono)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Editar", new {  id=item.IdInquilino }) |
-                @Html.ActionLink("Detalles", "Detalles", new { id=item.IdInquilino }) |
-                @Html.ActionLink("Eliminar", "Eliminar", new { id=item.IdInquilino })
+                <a class="btn btn-warning" asp-action="Editar" asp-route-id="@item.IdInquilino" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                <a class="btn btn-info" asp-action="Detalles" asp-route-id="@item.IdInquilino" title="Detalles"><i class="fas fa-book"></i></a>
+                <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdInquilino" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
 }

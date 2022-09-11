@@ -1,13 +1,13 @@
 @model IEnumerable<Net.Models.Propietario>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inicio de Propietario";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Ingresar un nuevo Propietario</a>
 </p>
 <table class="table">
     <thead>
@@ -29,9 +29,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Clave)
             </th>
             <th></th>
         </tr>
@@ -58,12 +55,9 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Clave)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Editar", new { id = item.IdPropietario }) |
-                @Html.ActionLink("Detalles", "Detalles", new { id = item.IdPropietario }) |
-                @Html.ActionLink("Eliminar", "Eliminar", new { id = item.IdPropietario })
+                <a class="btn btn-warning" asp-action="Editar" asp-route-id="@item.IdPropietario" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                <a class="btn btn-info" asp-action="Detalles" asp-route-id="@item.IdPropietario" title="Detalles"><i class="fas fa-book"></i></a>
+                <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdPropietario" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
 }
