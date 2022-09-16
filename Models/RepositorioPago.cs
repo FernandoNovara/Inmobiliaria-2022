@@ -130,9 +130,10 @@ public class RepositorioPago
 
         using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
         {
-            String sql = @"Update Pago Set IdContrato=@IdContrato,FechaEmision=@FechaEmision,Importe=@Importe where pago.IdPago = @id";
+            String sql = @"Update Pago Set IdPago=@IdPago,IdContrato=@IdContrato,FechaEmision=@FechaEmision,Importe=@Importe where IdPago = @id";
             using(MySqlCommand comm = new MySqlCommand(sql,conn))
             {
+                comm.Parameters.AddWithValue("@IdPago",p.IdPago);
                 comm.Parameters.AddWithValue("@IdContrato",p.IdContrato);
                 comm.Parameters.AddWithValue("@FechaEmision",p.FechaEmision);
                 comm.Parameters.AddWithValue("@Importe",p.Importe);

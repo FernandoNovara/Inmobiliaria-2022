@@ -1,13 +1,14 @@
 @model IEnumerable<Net.Models.Pago>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inicio de pago";
+    ViewData["Inquilino"] = "Inquilino a cargo";
+    List<Contrato> ListaContrato = (List<Contrato>)ViewBag.contrato;
 }
 
-<h1>Index</h1>
-
+<h1>@ViewData["Title"]</h1>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Ingresar un nuevo pago</a>
 </p>
 <table class="table">
     <thead>
@@ -17,6 +18,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IdContrato)
+            </th>
+            <th>
+                @ViewData["Inquilino"]
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FechaEmision)
@@ -34,18 +38,35 @@
                 @Html.DisplayFor(modelItem => item.IdPago)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdContrato)
+                @foreach (var valor in ListaContrato) 
+                {
+                    if(item.contrato.IdContrato == valor.IdContrato)
+                    {
+                        @Html.DisplayFor(modelItem => valor.inmueble.Direccion)
+                    }
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEmision)
+                @foreach (var dato in ListaContrato) 
+                {
+                    if(item.contrato.IdInquilino == dato.inquilino.IdInquilino)
+                    {
+                        @Html.DisplayFor(modelItem => dato.inquilino.Nombre)
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FechaEmision.Day) /
+                @Html.DisplayFor(model => item.FechaEmision.Month) /
+                @Html.DisplayFor(model => item.FechaEmision.Year)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Importe)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a class="btn btn-warning" asp-action="Editar" asp-route-id="@item.IdPago" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                <a class="btn btn-info" asp-action="Detalles" asp-route-id="@item.IdPago" title="Detalles"><i class="fas fa-book"></i></a>
+                <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdPago" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
 }

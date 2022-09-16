@@ -1,13 +1,15 @@
 @model Net.Models.Pago
 
 @{
-    ViewData["Title"] = "Detalles";
+    ViewData["Title"] = "Detalles de Pago";
+    ViewData["Inquilino"] = "Inquilino a cargo";
+    var Contrato = (Contrato)ViewBag.contrato;
+
 }
 
-<h1>Detalles</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>Pago</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -20,13 +22,21 @@
             @Html.DisplayNameFor(model => model.IdContrato)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdContrato)
+            @Html.DisplayFor(model => Contrato.inmueble.Direccion)
+        </dd>
+        <dt class = "col-sm-2">
+            @ViewData["Inquilino"];
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => Contrato.inquilino.Nombre)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FechaEmision)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaEmision)
+            @Html.DisplayFor(model => model.FechaEmision.Day) /
+            @Html.DisplayFor(model => model.FechaEmision.Month) /
+            @Html.DisplayFor(model => model.FechaEmision.Year)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Importe)
@@ -37,6 +47,5 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-success" asp-action="Index">Volver</a>
 </div>

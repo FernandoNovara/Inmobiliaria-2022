@@ -1,30 +1,37 @@
 @model Net.Models.Pago
 
 @{
-    ViewData["Title"] = "Editar";
+    ViewData["Title"] = "Editar datos de Pago";
+    List<Contrato> Contrato = (List<Contrato>) ViewBag.contrato;
 }
 
-<h1>Editar</h1>
+<h1>@ViewData["Title"] </h1>
 
-<h4>Pago</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Editar">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdPago" class="control-label"></label>
-                <input asp-for="IdPago" class="form-control" />
-                <span asp-validation-for="IdPago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="IdContrato" class="control-label"></label>
-                <input asp-for="IdContrato" class="form-control" />
+                <select class="form-control" name="IdContrato">
+                    @foreach (var item in Contrato)
+                    {
+                        if(item.IdContrato == Model.contrato.IdContrato)
+                        {
+                            <option selected value="@item.IdContrato">@item.inmueble.Direccion</option>
+                        }
+                        else
+                        {
+                            <option value="@item.IdContrato">@item.inmueble.Direccion</option>
+                        }
+                    }
+                </select>
                 <span asp-validation-for="IdContrato" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FechaEmision" class="control-label"></label>
-                <input asp-for="FechaEmision" class="form-control" />
+                <input type="Date" asp-for="FechaEmision" class="form-control" />
                 <span asp-validation-for="FechaEmision" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,14 +40,11 @@
                 <span asp-validation-for="Importe" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Editar" class="btn btn-primary" /> |
+                <a class="btn btn-success" asp-action="Index">Volver</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

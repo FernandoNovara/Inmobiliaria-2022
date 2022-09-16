@@ -4,60 +4,89 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Net.Models;
 
 namespace Net.Controllers
 {
     public class PagoController : Controller
     {
+
+        private RepositorioPago repositorioPago;
+        private RepositorioContrato repositorioContrato;
+
+        public PagoController()
+        {
+            repositorioPago = new RepositorioPago();
+            repositorioContrato = new RepositorioContrato();
+        }
+
         // GET: Pago
         public ActionResult Index()
         {
-            return View();
+            var lista = repositorioPago.ObtenerPagos();
+            ViewBag.contrato = repositorioContrato.ObtenerContratos();
+            return View(lista);
         }
 
         // GET: Pago/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Detalles(int id)
         {
-            return View();
+            var lista = repositorioPago.ObtenerPago(id);
+            ViewBag.contrato = repositorioContrato.ObtenerContrato(lista.contrato.IdContrato);
+            return View(lista);
         }
 
         // GET: Pago/Create
         public ActionResult Create()
         {
+            ViewBag.contrato = repositorioContrato.ObtenerContratos();
             return View();
         }
 
         // POST: Pago/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Pago p)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                var res = repositorioPago.Alta(p);
+                if(res > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else 
+                {
+                    return View();
+                }
+                
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                throw(ex);
             }
         }
 
         // GET: Pago/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Editar(int id)
         {
-            return View();
+            var lista = repositorioPago.ObtenerPago(id);
+            ViewBag.contrato = repositorioContrato.ObtenerContratos();
+            return View(lista);
         }
 
         // POST: Pago/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Editar(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
+                Pago p = repositorioPago.ObtenerPago(id);
+                p.IdContrato = Int32.Parse(collection["IdContrato"]);
+                p.FechaEmision = DateTime.Parse(collection["FechaEmision"]);
+                p.Importe = Double.Parse(collection["Importe"]);
+                repositorioPago.Actualizar(p);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -68,19 +97,21 @@ namespace Net.Controllers
         }
 
         // GET: Pago/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Eliminar(int id)
         {
-            return View();
+            var lista = repositorioPago.ObtenerPago(id);
+            ViewBag.contrato = repositorioContrato.ObtenerContrato(lista.contrato.IdContrato);
+            return View(lista);
         }
 
         // POST: Pago/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Eliminar(int id, IFormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                repositorioPago.Baja(id);
 
                 return RedirectToAction(nameof(Index));
             }
