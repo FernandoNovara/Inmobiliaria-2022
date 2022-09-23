@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Net.Models;
@@ -21,6 +22,7 @@ namespace Net.Controllers
         }
 
         // GET: Pago
+        [Authorize]
         public ActionResult Index()
         {
             var lista = repositorioPago.ObtenerPagos();
@@ -29,6 +31,7 @@ namespace Net.Controllers
         }
 
         // GET: Pago/Details/5
+        [Authorize]
         public ActionResult Detalles(int id)
         {
             var lista = repositorioPago.ObtenerPago(id);
@@ -37,6 +40,7 @@ namespace Net.Controllers
         }
 
         // GET: Pago/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.contrato = repositorioContrato.ObtenerContratos();
@@ -44,6 +48,7 @@ namespace Net.Controllers
         }
 
         // POST: Pago/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Pago p)
@@ -68,6 +73,7 @@ namespace Net.Controllers
         }
 
         // GET: Pago/Edit/5
+        [Authorize]
         public ActionResult Editar(int id)
         {
             var lista = repositorioPago.ObtenerPago(id);
@@ -76,6 +82,7 @@ namespace Net.Controllers
         }
 
         // POST: Pago/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Editar(int id, IFormCollection collection)
@@ -97,6 +104,7 @@ namespace Net.Controllers
         }
 
         // GET: Pago/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Eliminar(int id)
         {
             var lista = repositorioPago.ObtenerPago(id);
@@ -105,6 +113,7 @@ namespace Net.Controllers
         }
 
         // POST: Pago/Delete/5
+        [Authorize(Policy = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Eliminar(int id, IFormCollection collection)

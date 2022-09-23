@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Net.Models;
@@ -18,6 +19,7 @@ namespace Net.Controllers
         }
 
         // GET: Propietario
+        [Authorize]
         public ActionResult Index()
         {
             var lista = repositorio.ObtenerPropietarios();
@@ -25,6 +27,7 @@ namespace Net.Controllers
         }
 
         // GET: Propietario/Details/5
+        [Authorize]
         public ActionResult Detalles(int id)
         {
             var lista = repositorio.ObtenerPropietario(id);
@@ -32,12 +35,14 @@ namespace Net.Controllers
         }
 
         // GET: Propietario/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Propietario/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Propietario p)
@@ -62,6 +67,7 @@ namespace Net.Controllers
         }
 
         // GET: Propietario/Edit/5
+        [Authorize]
         public ActionResult Editar(int id)
         {
             var lista = repositorio.ObtenerPropietario(id);
@@ -69,6 +75,7 @@ namespace Net.Controllers
         }
 
         // POST: Propietario/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Editar(int id, IFormCollection collection)
@@ -93,6 +100,7 @@ namespace Net.Controllers
         }
 
         // GET: Propietario/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Eliminar(int id)
         {
             var lista = repositorio.ObtenerPropietario(id);
@@ -100,6 +108,7 @@ namespace Net.Controllers
         }
 
         // POST: Propietario/Delete/5
+        [Authorize(Policy = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Eliminar(int id, IFormCollection collection)

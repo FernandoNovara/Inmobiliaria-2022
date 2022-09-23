@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Net.Models;
@@ -21,6 +22,7 @@ namespace Net.Controllers
 
 
         // GET: Inmueble
+        [Authorize]
         public ActionResult Index()
         {
             var lista = repositorioInmueble.ObtenerInmuebles();
@@ -28,6 +30,7 @@ namespace Net.Controllers
         }
 
         // GET: Inmueble/Details/5
+        [Authorize]
         public ActionResult Detalles(int id)
         {                           
             var lista = repositorioInmueble.ObtenerInmueble(id);                  
@@ -35,6 +38,7 @@ namespace Net.Controllers
         }
 
         // GET: Inmueble/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.Propietario = repositorioPropietario.ObtenerPropietarios();
@@ -42,6 +46,7 @@ namespace Net.Controllers
         }
 
         // POST: Inmueble/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inmueble i)
@@ -66,6 +71,7 @@ namespace Net.Controllers
         }
 
         // GET: Inmueble/Edit/5
+        [Authorize]
         public ActionResult Editar(int id)
         {
             ViewBag.Propietario = repositorioPropietario.ObtenerPropietarios();
@@ -75,6 +81,7 @@ namespace Net.Controllers
         }
 
         // POST: Inmueble/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Editar(int id, IFormCollection collection)
@@ -115,6 +122,7 @@ namespace Net.Controllers
         }
 
         // GET: Inmueble/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Eliminar(int id)
         {
             var lista = repositorioInmueble.ObtenerInmueble(id);                  
@@ -122,6 +130,7 @@ namespace Net.Controllers
         }
 
         // POST: Inmueble/Delete/5
+        [Authorize(Policy = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Eliminar(int id, IFormCollection collection)

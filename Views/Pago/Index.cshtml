@@ -66,7 +66,10 @@
             <td>
                 <a class="btn btn-warning" asp-action="Editar" asp-route-id="@item.IdPago" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                 <a class="btn btn-info" asp-action="Detalles" asp-route-id="@item.IdPago" title="Detalles"><i class="fas fa-book"></i></a>
-                <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdPago" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdPago" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
+                }
             </td>
         </tr>
 }
