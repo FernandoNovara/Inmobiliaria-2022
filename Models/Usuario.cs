@@ -25,7 +25,7 @@ namespace Net.Models;
         [Required, EmailAddress]
         public string Email { get; set; }
 
-		[DataType(DataType.Password)]
+		[Required,DataType(DataType.Password)]
 		public string Clave { get; set; }
 
 		public string Avatar{get;set;}

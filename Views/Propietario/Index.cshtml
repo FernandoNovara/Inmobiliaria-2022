@@ -61,6 +61,7 @@
                 {
                     <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdPropietario" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
                 }
+                <a class="btn btn-success" asp-controller="inmueble" asp-action="ListarDisponiblePorPropietario" asp-route-id="@item.IdPropietario"><i class="fas fa-home"></i></a>
             </td>
         </tr>
 }

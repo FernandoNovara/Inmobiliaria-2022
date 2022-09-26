@@ -1,14 +1,36 @@
 @model IEnumerable<Net.Models.Inmueble>
 
 @{
-    ViewData["Title"] = "Inicio de inmueble";
+    
+    var dato = ViewBag.VistaPropietario;
+    if(dato)
+    {
+        ViewData["Title"] = "Inmuebles de Propietario";
+    }
+    else
+    {
+        ViewData["Title"] = "Inicio de inmueble";
+    }    
 }
 
 <h1>@ViewData["Title"]</h1>
+    
+    @if (!dato)
+    {
+        <a class="btn btn-info" asp-controller="Inmueble" asp-action="Index">Sin Orden</a> 
+        <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="0">No Disponible</a>
+        <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="1">Disponible</a>
+    
+        <p>
+            <a asp-action="Create">Ingresar un nuevo Inmueble</a>
+        </p>
+    
+    }
 
-<p>
-    <a asp-action="Create">Ingresar un nuevo Inmueble</a>
-</p>
+       
+
+
+
 <table class="table">
     <thead>
         <tr>

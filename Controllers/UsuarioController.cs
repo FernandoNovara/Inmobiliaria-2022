@@ -116,7 +116,7 @@ namespace Net.Controllers
                 
                 if(!User.IsInRole("Administrador"))
                 {
-                    //vista = nameof(Perfil);
+                    vista = nameof(Perfil);
                     user = repositorioUsuario.ObtenerUsuarioPorEmail(User.Identity.Name);
 
                     if(user.IdUsuario != id)

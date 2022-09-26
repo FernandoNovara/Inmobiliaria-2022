@@ -173,5 +173,98 @@ public class RepositorioInmueble
         return res;
     }
 
+    public IList<Inmueble> ObtenerInmueblesDisponibles(int valor)
+    {
+        var res = new List<Inmueble>();
+        using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
+        {
+            String sql = @"Select IdInmueble,Direccion,Uso,Tipo,Ambientes,Latitud,Longitud,Precio,Estado,propietario.IdPropietario,Nombre,Apellido 
+                            FROM inmueble 
+                            JOIN propietario on inmueble.IdPropietario = propietario.IdPropietario 
+                            WHERE inmueble.Estado = @valor
+                            ORDER BY IdInmueble ASC;";
+            using(MySqlCommand comm = new MySqlCommand(sql,conn))
+            {
+                comm.Parameters.AddWithValue("@valor",valor);
+                conn.Open();
+                var reader = comm.ExecuteReader();
+                while(reader.Read())
+                {
+                    Inmueble i = new Inmueble
+                    {
+                        IdInmueble = reader.GetInt32(0),
+                        Direccion = reader.GetString(1),
+                        Uso = reader.GetString(2),
+                        Tipo = reader.GetString(3),
+                        Ambientes = reader.GetInt32(4),
+                        Latitud = reader.GetString(5),
+                        Longitud = reader.GetString(6),
+                        Precio = reader.GetDouble(7),
+                        Estado = reader.GetBoolean(8),
+                        dueño = new Propietario
+                        {
+                            IdPropietario = reader.GetInt32(9),
+                            Nombre = reader.GetString(10),
+                            Apellido = reader.GetString(11),
+
+                        }
+                        
+                    };
+                    res.Add(i);
+                }
+                conn.Close();
+            }
+            
+        }
+        return res;
+    }
+
+
+    public IList<Inmueble> ObtenerInmueblesPorPropietario(int id)
+    {
+        var res = new List<Inmueble>();
+        using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
+        {
+            String sql = @"Select IdInmueble,Direccion,Uso,Tipo,Ambientes,Latitud,Longitud,Precio,Estado,propietario.IdPropietario,Nombre,Apellido 
+                            FROM inmueble
+                            JOIN propietario on inmueble.IdPropietario = propietario.IdPropietario 
+                            WHERE inmueble.IdPropietario = @id
+                            ORDER BY IdInmueble ASC;";
+            using(MySqlCommand comm = new MySqlCommand(sql,conn))
+            {
+                comm.Parameters.AddWithValue("@id",id);
+                conn.Open();
+                var reader = comm.ExecuteReader();
+                while(reader.Read())
+                {
+                    Inmueble i = new Inmueble
+                    {
+                        IdInmueble = reader.GetInt32(0),
+                        Direccion = reader.GetString(1),
+                        Uso = reader.GetString(2),
+                        Tipo = reader.GetString(3),
+                        Ambientes = reader.GetInt32(4),
+                        Latitud = reader.GetString(5),
+                        Longitud = reader.GetString(6),
+                        Precio = reader.GetDouble(7),
+                        Estado = reader.GetBoolean(8),
+                        dueño = new Propietario
+                        {
+                            IdPropietario = reader.GetInt32(9),
+                            Nombre = reader.GetString(10),
+                            Apellido = reader.GetString(11),
+
+                        }
+                        
+                    };
+                    res.Add(i);
+                }
+                conn.Close();
+            }
+            
+        }
+        return res;
+    }
+
 
 }

@@ -25,6 +25,7 @@ namespace Net.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            ViewBag.VistaPropietario = false;
             var lista = repositorioInmueble.ObtenerInmuebles();
             return View(lista);
         }
@@ -32,7 +33,7 @@ namespace Net.Controllers
         // GET: Inmueble/Details/5
         [Authorize]
         public ActionResult Detalles(int id)
-        {                           
+        {                         
             var lista = repositorioInmueble.ObtenerInmueble(id);                  
             return View(lista);
         }
@@ -145,6 +146,25 @@ namespace Net.Controllers
             {
                 return View();
             }
+        }
+
+
+        // GET: Inmueble
+        [Authorize]
+        public ActionResult ListarDisponible(int valor)
+        {
+            ViewBag.VistaPropietario = false;
+            var lista = repositorioInmueble.ObtenerInmueblesDisponibles(valor);
+            return View("Index",lista);
+        }
+
+        // GET: Inmueble
+        [Authorize]
+        public ActionResult ListarDisponiblePorPropietario(int id)
+        {
+            ViewBag.VistaPropietario = true;
+            var lista = repositorioInmueble.ObtenerInmueblesPorPropietario(id);
+            return View("Index",lista);
         }
     }
 }
