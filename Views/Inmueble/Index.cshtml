@@ -15,12 +15,16 @@
 
 <h1>@ViewData["Title"]</h1>
     
+
     @if (!dato)
     {
-        <a class="btn btn-info" asp-controller="Inmueble" asp-action="Index">Sin Orden</a> 
-        <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="0">No Disponible</a>
-        <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="1">Disponible</a>
-    
+        <div class="filtro">
+            <h5>Filtrar por:</h5> 
+            <a class="btn btn-info" asp-controller="Inmueble" asp-action="Index">Sin Orden</a> 
+            <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="0">No Disponible</a>
+            <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="1">Disponible</a>
+        </div>
+
         <p>
             <a asp-action="Create">Ingresar un nuevo Inmueble</a>
         </p>

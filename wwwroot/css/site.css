@@ -15,4 +15,53 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-image: url("fondo.jpg");
+  background-size: cover;
 }
+
+a{
+  text-decoration: none;
+  color: #000;
+}
+
+.table{
+  background-color: rgba(255, 255, 255, 0.9);
+  opacity: 85%;
+}
+
+.container .pb-3 div.filtro{
+  position:relative;
+  left: 60rem;
+}
+
+.footer{
+  background-color: black;
+  color: white;
+}
+
+.footer a{
+  color: white;
+}
+
+.login{
+  width: 350px;
+  height: 300px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 40px 30px;
+  text-align: center;
+  border-radius: 10px; 
+}
+
+.login div.form-group{
+  width: 300px;
+}
+
+.login div.boton{
+margin-top: 10px;
+}
+
