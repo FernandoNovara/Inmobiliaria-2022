@@ -108,7 +108,6 @@ namespace Net.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Editar(int id, Usuario usuario)
         {
-            var vista = nameof(Editar);
             Usuario user;
 
             try
@@ -116,14 +115,24 @@ namespace Net.Controllers
                 
                 if(!User.IsInRole("Administrador"))
                 {
-                    vista = nameof(Perfil);
                     user = repositorioUsuario.ObtenerUsuarioPorEmail(User.Identity.Name);
 
                     if(user.IdUsuario != id)
                     {
-                        user.Nombre = usuario.Nombre;
-                        user.Apellido = usuario.Apellido;
-                        user.Email = usuario.Email;
+                        if(!String.IsNullOrEmpty(usuario.Nombre))
+                        {
+                            user.Nombre = usuario.Nombre;
+                        }
+
+                        if(!String.IsNullOrEmpty(usuario.Apellido))
+                        {
+                            user.Apellido = usuario.Apellido;
+                        } 
+
+                        if(!String.IsNullOrEmpty(usuario.Email))
+                        {
+                            user.Email = usuario.Email;
+                        } 
 
                         if(!String.IsNullOrEmpty(usuario.Clave))
                         {
@@ -139,7 +148,7 @@ namespace Net.Controllers
                             }
                         }
 
-                        if(user.AvatarFile != null)
+                        if(usuario.AvatarFile != null)
                         {
                             string wwwPath = environment.WebRootPath;
                             string path = Path.Combine(wwwPath,"Upload");
@@ -151,18 +160,27 @@ namespace Net.Controllers
                                 usuario.AvatarFile.CopyTo(stream);
                             }
                         }
-                    }        
+                    }     
                     repositorioUsuario.Actualizar(user);
                     return RedirectToAction(nameof(Index),"Home");        
                 }
                 else
                 {
-                    
-
                     user = repositorioUsuario.ObtenerUsuario(id);
-                    user.Nombre = usuario.Nombre;
-                    user.Apellido = usuario.Apellido;
-                    user.Email = usuario.Email;
+                    if(!String.IsNullOrEmpty(usuario.Nombre))
+                    {
+                        user.Nombre = usuario.Nombre;
+                    }
+
+                    if(!String.IsNullOrEmpty(usuario.Apellido))
+                    {
+                        user.Apellido = usuario.Apellido;
+                    } 
+
+                    if(!String.IsNullOrEmpty(usuario.Email))
+                    {
+                        user.Email = usuario.Email;
+                    } 
 
                     if(!String.IsNullOrEmpty(usuario.Clave))
                     {
@@ -178,7 +196,7 @@ namespace Net.Controllers
                         }
                     }
 
-                    if(user.AvatarFile != null)
+                    if(usuario.AvatarFile != null)
                     {
                         string wwwPath = environment.WebRootPath;
                         string path = Path.Combine(wwwPath,"Upload");
@@ -190,9 +208,10 @@ namespace Net.Controllers
                             usuario.AvatarFile.CopyTo(stream);
                         }
                     }
+                    user.Rol = usuario.Rol;   
                     repositorioUsuario.Actualizar(user);
-                    return RedirectToAction(vista);
-                }
+                    return RedirectToAction(nameof(Index));
+                }   
             }
             catch(Exception ex)
             {

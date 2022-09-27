@@ -10,33 +10,60 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Editar">
+        <form asp-action="Editar" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <input name="Nombre" value="@Model.Nombre" type="text" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
+                <input name="Apellido" value="@Model.Apellido" type="text" class="form-control" />
                 <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input name="Email" value="@Model.Email" type="text" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" />
+                <input name="Clave" type="password" class="form-control" />
                 <span asp-validation-for="Clave" class="text-danger"></span>
             </div>
+
             <div class="form-group">
 				<label asp-for="AvatarFile" class="control-label"></label>
 				<input class="form-control" type="file" name="AvatarFile" />
 				<span asp-validation-for="AvatarFile" class="text-danger"></span>
             </div>
+
+            @if(User.IsInRole("Administrador"))
+            {
+                <div class="form-group">
+                    <label asp-for="Rol" class="control-label"></label>
+                    <select class="form-control" name="Rol">
+                        @foreach (var rol in Roles)
+                        {
+                            if(rol.Value.Equals(Model.RolNombre))
+                            {
+                                <option selected value="@rol.Key">@rol.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@rol.Key">@rol.Value</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Rol" class="text-danger"></span>
+                </div>
+            }
+
             <div class="form-group">
                 <input type="submit" value="Editar" class="btn btn-primary" /> |
                 @if (User.IsInRole("Administrador"))
