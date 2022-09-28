@@ -25,6 +25,7 @@ namespace Net.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            ViewBag.VistaPago = false;
             var lista = repositorioPago.ObtenerPagos();
             ViewBag.contrato = repositorioContrato.ObtenerContratos();
             return View(lista);
@@ -128,6 +129,27 @@ namespace Net.Controllers
             {
                 return View();
             }
+        }
+
+
+        // GET: Pago/Delete/5
+        [Authorize]
+        public ActionResult ListarPagosPorContratos(int id)
+        {
+            ViewBag.VistaPago = true;
+            ViewBag.contrato = repositorioContrato.ObtenerContratos();
+            var lista = repositorioPago.ObtenerPagosPorContratos(id);
+            return View("Index",lista);
+        }
+
+        // GET: Pago/Edit/5
+        [Authorize]
+        public ActionResult RealizarPago(int id)
+        {
+            var lista = repositorioPago.ObtenerPago(id);
+            lista.FechaEmision = DateTime.Now;
+            ViewBag.contrato = repositorioContrato.ObtenerContratos();
+            return View("create",lista);
         }
     }
 }

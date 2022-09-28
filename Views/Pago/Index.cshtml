@@ -1,15 +1,31 @@
 @model IEnumerable<Net.Models.Pago>
 
 @{
+    var nombre = "";
     ViewData["Title"] = "Inicio de pago";
     ViewData["Inquilino"] = "Inquilino a cargo";
     List<Contrato> ListaContrato = (List<Contrato>)ViewBag.contrato;
+
+    var vista = ViewBag.VistaPago;
+    if(vista)
+    {
+        ViewData["Title"] = "Pagos de Contrato";
+    }
+    else
+    {
+        ViewData["Title"] = "Inicio de Pago";
+    }    
 }
 
 <h1>@ViewData["Title"]</h1>
-<p>
-    <a asp-action="Create">Ingresar un nuevo pago</a>
-</p>
+    
+    @if (!vista)
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-success">Ingresar un nuevo pago</a>
+        </p>
+    }
+
 <table class="table">
     <thead>
         <tr>
@@ -49,9 +65,14 @@
             <td>
                 @foreach (var dato in ListaContrato) 
                 {
+                    
                     if(item.contrato.IdInquilino == dato.inquilino.IdInquilino)
                     {
-                        @Html.DisplayFor(modelItem => dato.inquilino.Nombre)
+                        if(!nombre.Equals(dato.inquilino.Nombre))
+                        {
+                            @Html.DisplayFor(modelItem => dato.inquilino.Nombre)
+                        }
+                        nombre = dato.inquilino.Nombre;
                     }
                 }
             </td>
@@ -64,7 +85,14 @@
                 @Html.DisplayFor(modelItem => item.Importe)
             </td>
             <td>
-                <a class="btn btn-warning" asp-action="Editar" asp-route-id="@item.IdPago" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                @if(!vista)
+                {
+                    <a class="btn btn-warning" asp-action="Editar" asp-route-id="@item.IdPago" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                }
+                else
+                {
+                    <a class="btn btn-success" asp-action="RealizarPago" asp-route-id="@item.IdPago" title="Pagar"><i class="fas fa-money-bill"></i></a>
+                }
                 <a class="btn btn-info" asp-action="Detalles" asp-route-id="@item.IdPago" title="Detalles"><i class="fas fa-book"></i></a>
                 @if (User.IsInRole("Administrador"))
                 {

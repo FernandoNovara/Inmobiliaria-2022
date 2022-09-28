@@ -17,7 +17,23 @@
                 <select class="form-control" name="IdContrato">
                     @foreach (var item in Contrato)
                     {
-                        <option selected value="@item.IdContrato">@item.inmueble.Direccion</option>
+                        if(Model == null)
+                        {
+                            <option value="@item.IdContrato">@item.inmueble.Direccion</option>
+                        }
+                        else
+                        {
+                            if(item.IdContrato == Model.contrato.IdContrato)
+                            {
+                                <option selected value="@item.IdContrato">@item.inmueble.Direccion</option>
+                            }
+                            else
+                            {
+                                <option value="@item.IdContrato">@item.inmueble.Direccion</option>
+                            }
+                        }
+                        
+                        
                     }
                 </select>
                 <span asp-validation-for="IdContrato" class="text-danger"></span>

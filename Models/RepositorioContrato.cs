@@ -20,7 +20,7 @@ public class RepositorioContrato
                             FROM Contrato
                             JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
                             JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
-                            ORDER BY IdInmueble ASC;";
+                            ORDER BY IdContrato ASC;";
             using(MySqlCommand comm = new MySqlCommand(sql,conn))
             {
                 conn.Open();
@@ -89,7 +89,8 @@ public class RepositorioContrato
                             FROM Contrato
                             JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
                             JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
-                            where IdContrato = @id;";
+                            where IdContrato = @id
+                            ORDER BY IdContrato ASC;";
             using(MySqlCommand comm = new MySqlCommand(sql,conn))
             {
                 comm.Parameters.AddWithValue("@id",id);
@@ -164,5 +165,134 @@ public class RepositorioContrato
         return res;
     }
 
+    public IList<Contrato> ObtenerContratosVigentes()
+    {
+        var res = new List<Contrato>();
+        using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
+        {
+            String sql = @"Select IdContrato,inmueble.IdInmueble,inmueble.Direccion,inquilino.IdInquilino,inquilino.Nombre,FechaInicio,FechaFinal,Monto 
+                            FROM Contrato
+                            JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
+                            JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
+                            where contrato.FechaInicio <= CURRENT_DATE AND contrato.FechaFinal > CURRENT_DATE 
+                            ORDER BY IdContrato ASC;";
+            using(MySqlCommand comm = new MySqlCommand(sql,conn))
+            {
+                conn.Open();
+                var reader = comm.ExecuteReader();
+                while(reader.Read())
+                {
+                    Contrato i = new Contrato
+                    {
+                        IdContrato = reader.GetInt32(0),
+                        inmueble = new Inmueble
+                            {
+                              IdInmueble = reader.GetInt32(1),  
+                              Direccion = reader.GetString(2),
+                            },
+                        inquilino = new Inquilino
+                            {
+                                IdInquilino = reader.GetInt32(3),
+                                Nombre = reader.GetString(4),
+                            },
+                        FechaInicio = reader.GetDateTime(5),
+                        FechaFinal = reader.GetDateTime(6),
+                        Monto = reader.GetDouble(7),
+                    };
+                    res.Add(i);
+                }
+                conn.Close();
+            }
+            
+        }
+        return res;
+    }
+
+    public IList<Contrato> ObtenerContratosNoVigentes()
+    {
+        var res = new List<Contrato>();
+        using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
+        {
+            String sql = @"Select IdContrato,inmueble.IdInmueble,inmueble.Direccion,inquilino.IdInquilino,inquilino.Nombre,FechaInicio,FechaFinal,Monto 
+                            FROM Contrato
+                            JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
+                            JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
+                            where contrato.FechaInicio > CURRENT_DATE || contrato.FechaFinal <= CURRENT_DATE 
+                            ORDER BY IdContrato ASC;";
+            using(MySqlCommand comm = new MySqlCommand(sql,conn))
+            {
+                conn.Open();
+                var reader = comm.ExecuteReader();
+                while(reader.Read())
+                {
+                    Contrato i = new Contrato
+                    {
+                        IdContrato = reader.GetInt32(0),
+                        inmueble = new Inmueble
+                            {
+                              IdInmueble = reader.GetInt32(1),  
+                              Direccion = reader.GetString(2),
+                            },
+                        inquilino = new Inquilino
+                            {
+                                IdInquilino = reader.GetInt32(3),
+                                Nombre = reader.GetString(4),
+                            },
+                        FechaInicio = reader.GetDateTime(5),
+                        FechaFinal = reader.GetDateTime(6),
+                        Monto = reader.GetDouble(7),
+                    };
+                    res.Add(i);
+                }
+                conn.Close();
+            }
+            
+        }
+        return res;
+    }
+
+    public IList<Contrato> ObtenerContratosPorInmueble(int id)
+    {
+        var res = new List<Contrato>();
+        using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
+        {
+            String sql = @"Select IdContrato,inmueble.IdInmueble,inmueble.Direccion,inquilino.IdInquilino,inquilino.Nombre,FechaInicio,FechaFinal,Monto 
+                            FROM Contrato
+                            JOIN inmueble ON contrato.IdInmueble = inmueble.IdInmueble
+                            JOIN inquilino ON contrato.IdInquilino = inquilino.IdInquilino
+                            WHERE contrato.IdInmueble = @id
+                            ORDER BY IdContrato ASC;";
+            using(MySqlCommand comm = new MySqlCommand(sql,conn))
+            {
+                comm.Parameters.AddWithValue("@id",id);
+                conn.Open();
+                var reader = comm.ExecuteReader();
+                while(reader.Read())
+                {
+                    Contrato i = new Contrato
+                    {
+                        IdContrato = reader.GetInt32(0),
+                        inmueble = new Inmueble
+                            {
+                              IdInmueble = reader.GetInt32(1),  
+                              Direccion = reader.GetString(2),
+                            },
+                        inquilino = new Inquilino
+                            {
+                                IdInquilino = reader.GetInt32(3),
+                                Nombre = reader.GetString(4),
+                            },
+                        FechaInicio = reader.GetDateTime(5),
+                        FechaFinal = reader.GetDateTime(6),
+                        Monto = reader.GetDouble(7),
+                    };
+                    res.Add(i);
+                }
+                conn.Close();
+            }
+            
+        }
+        return res;
+    }
 
 }

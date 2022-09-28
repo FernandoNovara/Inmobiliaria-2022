@@ -20,14 +20,14 @@
             @Html.DisplayNameFor(model => model.IdInmueble)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.inmueble.Direccion)
+            @Html.DisplayFor(model => model.inmueble.Direccion)   |
             @Html.ActionLink("Detalles", "Detalles","Inmueble", new {  id = Model.inmueble.IdInmueble })
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IdInquilino)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.inquilino.Nombre)
+            @Html.DisplayFor(model => model.inquilino.Nombre)  |
             @Html.ActionLink("Detalles", "Detalles","Inquilino", new {  id = Model.inquilino.IdInquilino })
         </dd>
         <dt class = "col-sm-2">

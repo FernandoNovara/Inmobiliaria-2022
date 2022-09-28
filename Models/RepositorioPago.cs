@@ -147,5 +147,42 @@ public class RepositorioPago
         return res;
     }
 
+    public IList<Pago> ObtenerPagosPorContratos(int id)
+    {
+        var res = new List<Pago>();
+        using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
+        {
+            String sql = @"SELECT IdPago,contrato.IdContrato,contrato.IdInmueble,contrato.IdInquilino,pago.FechaEmision,pago.Importe
+                            FROM pago
+                            JOIN contrato On pago.IdContrato = contrato.IdContrato
+                            WHERE pago.IdContrato = @id;";
+            using(MySqlCommand comm = new MySqlCommand(sql,conn))
+            {
+                comm.Parameters.AddWithValue("@id",id);
+                conn.Open();
+                var reader = comm.ExecuteReader();
+                while(reader.Read())
+                {
+                    var p = new Pago
+                    {
+                        IdPago = reader.GetInt32(0),
+                        contrato = new Contrato
+                        {
+                            IdContrato = reader.GetInt32(1),
+                            IdInmueble = reader.GetInt32(2),
+                            IdInquilino = reader.GetInt32(3),
+                        },
+                        FechaEmision = reader.GetDateTime(4),
+                        Importe = reader.GetDouble(5)
+                    };
+                    res.Add(p);
+                }
+                conn.Close();
+            }
+            
+        }
+        return res;
+    }
+
 
 }

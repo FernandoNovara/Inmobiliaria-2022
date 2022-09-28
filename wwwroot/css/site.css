@@ -32,6 +32,18 @@ a{
 .container .pb-3 div.filtro{
   position:relative;
   left: 60rem;
+  width: fit-content;
+}
+
+.container .pb-3 div.filtroContratos{
+  position:relative;
+  left: 50rem;
+  width: fit-content;
+}
+
+.container .pb-3 a#botonCrear{
+  position: absolute;
+  top: 10rem;
 }
 
 .footer{

@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Net.Models;
 
 public class Propietario
 {
+    [Display(Name = "Cod. Propietario")]
     public int IdPropietario {get;set;}
 
     public string Nombre {get;set;}

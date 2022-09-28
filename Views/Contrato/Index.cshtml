@@ -1,13 +1,33 @@
 @model IEnumerable<Net.Models.Contrato>
 
 @{
-    ViewData["Title"] = "Inicio de contrato";
+    var dato = ViewBag.VistaContrato;
+    if(dato)
+    {
+        ViewData["Title"] = "Contratos de inmuebles";
+    }
+    else
+    {
+        ViewData["Title"] = "Inicio de Contrato";
+    }    
 }
 
 <h1>@ViewData["Title"]</h1>
-<p>
-    <a asp-action="Create">Ingresar un nuevo Contrato</a>
-</p>
+    
+    @if (!dato)
+    {
+        <div class="filtroContratos">
+            <h5>Mostrar contratos vigentes:</h5> 
+            <a class="btn btn-success" asp-controller="contrato" asp-action="Index">Todos los Contratos</a>
+            <a class="btn btn-success" asp-controller="contrato" asp-action="ContratoVigentes">Contratos Vigentes</a> 
+            <a class="btn btn-success" asp-controller="contrato" asp-action="ContratoNoVigentes">Contratos No Vigentes</a>
+        </div>
+
+        <p>
+            <a asp-action="Create" class="btn btn-success" id="botonCrear">Ingresar un nuevo Contrato</a>
+        </p>
+    }
+
 <table class="table">
     <thead>
         <tr>
@@ -64,7 +84,7 @@
                 {
                     <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdContrato" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
                 }
-                
+                <a class="btn btn-success" asp-controller="pago" asp-action="ListarPagosPorContratos" asp-route-id="@item.IdContrato"><i class="fas fa-scroll"></i></a>
             </td>
         </tr>
 }

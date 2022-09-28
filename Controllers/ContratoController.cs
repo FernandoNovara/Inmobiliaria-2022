@@ -25,6 +25,7 @@ namespace Net.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            ViewBag.VistaContrato = false;
             var lista = repositorioContrato.ObtenerContratos();
             return View(lista);
         }
@@ -128,6 +129,31 @@ namespace Net.Controllers
             {
                 throw;
             }
+        }
+
+        // GET: Contrato
+        [Authorize]
+        public ActionResult ContratoVigentes()
+        {
+            ViewBag.VistaContrato = false;
+            var lista = repositorioContrato.ObtenerContratosVigentes();
+            return View("Index",lista);
+        }
+
+        [Authorize]
+        public ActionResult ContratoNoVigentes()
+        {
+            ViewBag.VistaContrato = false;
+            var lista = repositorioContrato.ObtenerContratosNoVigentes();
+            return View("Index",lista);
+        }
+
+        [Authorize]
+        public ActionResult ListarContratosPorInmuebles(int id)
+        {
+            ViewBag.VistaContrato = true;
+            var lista = repositorioContrato.ObtenerContratosPorInmueble(id);
+            return View("Index",lista);
         }
     }
 }

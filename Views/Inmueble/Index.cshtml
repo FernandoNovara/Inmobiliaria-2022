@@ -20,13 +20,13 @@
     {
         <div class="filtro">
             <h5>Filtrar por:</h5> 
-            <a class="btn btn-info" asp-controller="Inmueble" asp-action="Index">Sin Orden</a> 
-            <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="0">No Disponible</a>
-            <a class="btn btn-info" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="1">Disponible</a>
+            <a class="btn btn-success" asp-controller="Inmueble" asp-action="Index">Sin Orden</a> 
+            <a class="btn btn-success" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="0">No Disponible</a>
+            <a class="btn btn-success" asp-controller="Inmueble" asp-action="ListarDisponible" asp-route-valor="1">Disponible</a>
         </div>
 
         <p>
-            <a asp-action="Create">Ingresar un nuevo Inmueble</a>
+            <a asp-action="Create" class="btn btn-success" id="botonCrear">Ingresar un nuevo Inmueble</a>
         </p>
     
     }
@@ -87,6 +87,7 @@
                 {
                     <a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.IdInmueble" title="Eliminar"><i class="fas fa-trash-alt"></i></a>
                 }
+                <a class="btn btn-success" asp-controller="contrato" asp-action="ListarContratosPorInmuebles" asp-route-id="@item.IdInmueble"><i class="fas fa-scroll"></i></a>
             </td>
         </tr>
 }
