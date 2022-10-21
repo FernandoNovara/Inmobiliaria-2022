@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Net.Models;
+using Inmobiliaria_2022.Models;
 
-namespace Net.Controllers
+namespace Inmobiliaria_2022.Controllers
 {
     public class PagoController : Controller
     {

@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Net.Models;
+using Inmobiliaria_2022.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace Net.Controllers
+namespace Inmobiliaria_2022.Controllers
 {
     public class PropietarioController : Controller
     {
         RepositorioPropietario repositorio;
+        private readonly IConfiguration configuration;
 
-        public PropietarioController()
+        public PropietarioController(IConfiguration configuration)
         {
+            this.configuration = configuration;
             repositorio = new RepositorioPropietario();
         }
 
@@ -49,6 +52,13 @@ namespace Net.Controllers
         {
             try
             {
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: p.Clave,
+                        salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                p.Clave = hashed;
                 int res = repositorio.Alta(p);
                 if(res > 0)
                 {
@@ -88,7 +98,15 @@ namespace Net.Controllers
                 p.Dni = collection["Dni"];
                 p.Telefono = collection["Telefono"];
                 p.Email = collection["Email"];
-                p.Clave = collection["Clave"];
+
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: collection["Clave"],
+                        salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                p.Clave = hashed;
+
                 repositorio.Actualizar(p);
 
                 return RedirectToAction(nameof(Index));

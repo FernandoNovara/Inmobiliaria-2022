@@ -1,4 +1,4 @@
-namespace Net.Models;
+namespace Inmobiliaria_2022.Models;
 using MySql.Data.MySqlClient;
 
 public class RepositorioUsuario

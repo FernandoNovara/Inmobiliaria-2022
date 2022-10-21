@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Net.Models;
+namespace Inmobiliaria_2022.Models;
 
 public class Contrato
 {

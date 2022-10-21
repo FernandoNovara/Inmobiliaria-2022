@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Net.Models;
+namespace Inmobiliaria_2022.Models;
 
 public class Propietario
 {
     [Display(Name = "Cod. Propietario")]
+    [Key]
     public int IdPropietario {get;set;}
 
     public string Nombre {get;set;}

@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Net.Models;
+namespace Inmobiliaria_2022.Models;
 
 public class Pago
 {
     [Display(Name="Codigo de Pago")]
+    [Key]
     public int IdPago {get;set;}
 
     [Display(Name = "Direccion de Contrato")]

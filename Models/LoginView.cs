@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Net.Models;
+namespace Inmobiliaria_2022.Models;
 
 public class LoginView
 {

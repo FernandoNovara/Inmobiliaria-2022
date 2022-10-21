@@ -1,6 +1,11 @@
+using Inmobiliaria_2022.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+var Configuration = builder.Configuration;
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
@@ -8,13 +13,44 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             options.LoginPath = "/Usuario/Login";
             options.LogoutPath = "/Usuario/Logout";
             options.AccessDeniedPath = "/Home/Restringido/";
-        });
+        })
+        .AddJwtBearer(options =>//la api web valida con token
+				{
+					options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+					{
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = Configuration["TokenAuthentication:Issuer"],
+						ValidAudience = Configuration["TokenAuthentication:Audience"],
+						IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(
+							Configuration["TokenAuthentication:SecretKey"])),
+					};
+				});
 
 builder.Services.AddAuthorization(options => 
 {
         options.AddPolicy("Administrador",
                     policy => policy.RequireRole("Administrador"));
-});  
+});
+
+//var ServerVersion = new MySqlServerVersion(new Version(8,0,29));
+
+builder.Services.AddDbContext<DataContext>(
+    options => options.UseMySql(
+        Configuration["ConnectionString:DefaultConnection"],
+        ServerVersion.AutoDetect(Configuration["ConnectionString:DefaultConnection"])
+    )
+); 
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000);
+    serverOptions.ListenAnyIP(5001,listenOptions => listenOptions.UseHttps());
+});
+
+//builder.Services.AddTransient<IRepositorio<Propietario>, IRepositorioPropietario>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -29,7 +65,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

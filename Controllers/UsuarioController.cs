@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Net.Models;
+using Inmobiliaria_2022.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Net.Controllers
+namespace Inmobiliaria_2022.Controllers
 {
     public class UsuarioController : Controller
     {
