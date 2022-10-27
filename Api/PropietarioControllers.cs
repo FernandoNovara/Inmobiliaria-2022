@@ -33,6 +33,7 @@ namespace Inmobiliaria_2022.Api
 		{
 			try
 			{
+				// Funciona retorna los datos del usuario logueado
                 var propietario = await Contexto.Propietario.FirstOrDefaultAsync(x => x.Email == User.Identity.Name );
                 return propietario != null ? Ok(propietario) : NotFound();
 			}

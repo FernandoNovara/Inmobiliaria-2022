@@ -17,10 +17,12 @@ namespace Inmobiliaria_2022.Api
 	{
 
 		private readonly DataContext Contexto;
+		private readonly IWebHostEnvironment environment;
 
-		public InmuebleController(DataContext dataContext)
+		public InmuebleController(DataContext dataContext,IWebHostEnvironment environment)
 		{
 			this.Contexto = dataContext;
+			this.environment = environment;
 		}
 
 
@@ -67,6 +69,28 @@ namespace Inmobiliaria_2022.Api
 			{
 				if(ModelState.IsValid)
 				{
+
+					if(inmueble.Imagen != null)
+					{
+						MemoryStream ms = new MemoryStream(Convert.FromBase64String(inmueble.Imagen));
+						IFormFile Imagen = new FormFile(ms,0,ms.Length,"inmueble",".jpg");
+						String wwwPath = environment.WebRootPath;
+						String path = Path.Combine(wwwPath,"Uploads");
+						if(!Directory.Exists(path))
+						{
+							Directory.CreateDirectory(path);
+						}
+
+						String fileName = "inmueble_" + inmueble.IdInmueble + Path.GetExtension(Imagen.FileName);
+						String pathCompleto = Path.Combine(path,fileName);
+
+						inmueble.Imagen = Path.Combine("http://192.168.1.108:5000/","Uploads/",fileName);
+						using (FileStream fs = new FileStream(pathCompleto, FileMode.Create))
+						{
+							Imagen.CopyTo(fs);
+						}
+					}
+
 					var propietario = await Contexto.Propietario.FirstOrDefaultAsync(x => x.Email == User.Identity.Name);
 					inmueble.IdPropietario = propietario.IdPropietario;
 					await Contexto.Inmueble.AddAsync(inmueble);
@@ -111,6 +135,26 @@ namespace Inmobiliaria_2022.Api
 					return BadRequest(ex.Message);
 				}
 			}
+
+			// GET: api/<controller>/5
+		[HttpPost("InmueblesConContrato")]
+		public async Task<ActionResult> InmueblesConContrato()
+		{	
+			try
+			{
+                var propietario = await Contexto.Propietario.FirstOrDefaultAsync(x => x.Email == User.Identity.Name);
+				var inmuebles = Contexto.Inmueble.Where(x => x.IdPropietario == propietario.IdPropietario);
+				var contrato = Contexto.Contrato.Include(c=> c.inmueble).Include(i=>i.inquilino).Where(c => c.inmueble.dueño.Email == propietario.Email);
+                
+                return Ok(inmuebles);
+			}
+			catch(Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+
 
     }
 }

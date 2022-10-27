@@ -23,5 +23,7 @@ public class Inmueble
     public double Precio {get;set;}
     public Boolean Estado {get;set;}
 
+    public String? Imagen {get;set;}
+
     
 }
