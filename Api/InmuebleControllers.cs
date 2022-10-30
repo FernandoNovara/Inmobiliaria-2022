@@ -70,6 +70,9 @@ namespace Inmobiliaria_2022.Api
 				if(ModelState.IsValid)
 				{
 
+					var propietario = await Contexto.Propietario.FirstOrDefaultAsync(x => x.Email == User.Identity.Name);
+					inmueble.IdPropietario = propietario.IdPropietario;
+
 					if(inmueble.Imagen != null)
 					{
 						MemoryStream ms = new MemoryStream(Convert.FromBase64String(inmueble.Imagen));
@@ -80,8 +83,9 @@ namespace Inmobiliaria_2022.Api
 						{
 							Directory.CreateDirectory(path);
 						}
-
-						String fileName = "inmueble_" + inmueble.IdInmueble + Path.GetExtension(Imagen.FileName);
+						
+						Random r = new Random();
+						String fileName = "inmueble_" + inmueble.IdPropietario + r.Next(0,100000) + Path.GetExtension(Imagen.FileName);
 						String pathCompleto = Path.Combine(path,fileName);
 
 						inmueble.Imagen = Path.Combine("http://192.168.1.108:5000/","Uploads/",fileName);
@@ -90,9 +94,6 @@ namespace Inmobiliaria_2022.Api
 							Imagen.CopyTo(fs);
 						}
 					}
-
-					var propietario = await Contexto.Propietario.FirstOrDefaultAsync(x => x.Email == User.Identity.Name);
-					inmueble.IdPropietario = propietario.IdPropietario;
 					await Contexto.Inmueble.AddAsync(inmueble);
 					Contexto.SaveChanges();
 					return CreatedAtAction(nameof(Get),new {id = inmueble.IdInmueble},inmueble);
