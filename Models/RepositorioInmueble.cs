@@ -15,7 +15,7 @@ public class RepositorioInmueble
         var res = new List<Inmueble>();
         using (MySqlConnection conn = new MySqlConnection(ConnectionStrings))
         {
-            String sql = @"Select IdInmueble,Direccion,Uso,Tipo,Ambientes,Latitud,Longitud,Precio,Estado,propietario.IdPropietario,Nombre,Apellido 
+            String sql = @"Select IdInmueble,Direccion,Uso,Tipo,Ambientes,Latitud,Longitud,Precio,Estado,propietario.IdPropietario,Nombre,Apellido
                             FROM inmueble
                             JOIN propietario on inmueble.IdPropietario = propietario.IdPropietario ORDER BY IdInmueble ASC;";
             using(MySqlCommand comm = new MySqlCommand(sql,conn))
